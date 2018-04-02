@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE generatorConfiguration PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN" "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd" >
+<generatorConfiguration>
+	<classPathEntry location="E:\Java\maven\repos\mysql\mysql-connector-java\5.1.34\mysql-connector-java-5.1.34.jar" />
+	<context id="context1" targetRuntime="MyBatis3">
+		<jdbcConnection driverClass="com.mysql.jdbc.Driver"
+									 connectionURL="jdbc:mysql://localhost:3306/didi" userId="root"
+									 password="root">
+		</jdbcConnection>
+		<javaModelGenerator targetPackage="com.didiElectrician.domain"
+			targetProject="E:\generator" />
+
+		<sqlMapGenerator targetPackage="com.didiElectrician.dao"
+			targetProject="E:\generator" />
+
+		<javaClientGenerator targetPackage="com.didiElectrician.dao"
+			targetProject="E:\generator" type="XMLMAPPER" />
+
+		<table schema="root" tableName="address" domainObjectName="Address"
+			   enableCountByExample="false" enableUpdateByExample="false"
+			   enableDeleteByExample="false" enableSelectByExample="false"
+			   selectByExampleQueryId="false" />
+
+
+
+		<table schema="root" tableName="bank_card" domainObjectName="BankCard"
+			enableCountByExample="false" enableUpdateByExample="false"
+			enableDeleteByExample="false" enableSelectByExample="false"
+			selectByExampleQueryId="false" />
+
+		<table schema="root" tableName="client" domainObjectName="Client"
+			   enableCountByExample="false" enableUpdateByExample="false"
+			   enableDeleteByExample="false" enableSelectByExample="false"
+			   selectByExampleQueryId="false" />
+
+		<table schema="root" tableName="course" domainObjectName="Course"
+			   enableCountByExample="false" enableUpdateByExample="false"
+			   enableDeleteByExample="false" enableSelectByExample="false"
+			   selectByExampleQueryId="false" />
+
+		<table schema="root" tableName="e_wallet" domainObjectName="EWallet"
+			   enableCountByExample="false" enableUpdateByExample="false"
+			   enableDeleteByExample="false" enableSelectByExample="false"
+			   selectByExampleQueryId="false" />
+
+		<table schema="root" tableName="electrician" domainObjectName="Electrician"
+			   enableCountByExample="false" enableUpdateByExample="false"
+			   enableDeleteByExample="false" enableSelectByExample="false"
+			   selectByExampleQueryId="false" />
+
+		<table schema="root" tableName="evaluate" domainObjectName="Evaluate"
+				enableCountByExample="false" enableUpdateByExample="false"
+				enableDeleteByExample="false" enableSelectByExample="false"
+				selectByExampleQueryId="false" />
+
+		<table schema="root" tableName="feedback" domainObjectName="Feedback"
+			   enableCountByExample="false" enableUpdateByExample="false"
+			   enableDeleteByExample="false" enableSelectByExample="false"
+			   selectByExampleQueryId="false" />
+
+		<table schema="root" tableName="module" domainObjectName="Module"
+			   enableCountByExample="false" enableUpdateByExample="false"
+			   enableDeleteByExample="false" enableSelectByExample="false"
+			   selectByExampleQueryId="false" />
+
+		<table schema="root" tableName="permission" domainObjectName="Permission"
+			   enableCountByExample="false" enableUpdateByExample="false"
+			   enableDeleteByExample="false" enableSelectByExample="false"
+			   selectByExampleQueryId="false" />
+
+		<table schema="root" tableName="role" domainObjectName="Role"
+			   enableCountByExample="false" enableUpdateByExample="false"
+			   enableDeleteByExample="false" enableSelectByExample="false"
+			   selectByExampleQueryId="false" />
+
+
+		<table schema="root" tableName="role_module" domainObjectName="RoleModule"
+			   enableCountByExample="false" enableUpdateByExample="false"
+			   enableDeleteByExample="false" enableSelectByExample="false"
+			   selectByExampleQueryId="false" />
+
+		<table schema="root" tableName="role_permission" domainObjectName="RolePermission"
+			   enableCountByExample="false" enableUpdateByExample="false"
+			   enableDeleteByExample="false" enableSelectByExample="false"
+			   selectByExampleQueryId="false" />
+
+		<table schema="root" tableName="transaction_record" domainObjectName="TransactionRecord"
+			   enableCountByExample="false" enableUpdateByExample="false"
+			   enableDeleteByExample="false" enableSelectByExample="false"
+			   selectByExampleQueryId="false" />
+
+		<table schema="root" tableName="user_role" domainObjectName="UserRole"
+			   enableCountByExample="false" enableUpdateByExample="false"
+			   enableDeleteByExample="false" enableSelectByExample="false"
+			   selectByExampleQueryId="false" />
+
+
+		<table schema="root" tableName="wallet_change_log" domainObjectName="WalletChangeLog"
+			   enableCountByExample="false" enableUpdateByExample="false"
+			   enableDeleteByExample="false" enableSelectByExample="false"
+			   selectByExampleQueryId="false" />
+		<table schema="root" tableName="work_order" domainObjectName="WorkOrder"
+			   enableCountByExample="false" enableUpdateByExample="false"
+			   enableDeleteByExample="false" enableSelectByExample="false"
+			   selectByExampleQueryId="false" />
+		<table schema="root" tableName="work_order_status" domainObjectName="WorkOrderStatus"
+			   enableCountByExample="false" enableUpdateByExample="false"
+			   enableDeleteByExample="false" enableSelectByExample="false"
+			   selectByExampleQueryId="false" />
+
+
+
+
+
+	</context>
+</generatorConfiguration>
+

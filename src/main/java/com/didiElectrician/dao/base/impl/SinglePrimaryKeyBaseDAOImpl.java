@@ -43,12 +43,10 @@ public class SinglePrimaryKeyBaseDAOImpl<T> implements
 	}
 
 	public List<T> selectByParameters(Map<String, Object> map) {
-
 		return template.selectList(getNamespace("selectByParameters"), map);
 	}
 
 	public int updateByPrimaryKey(T record) {
-
 		return template.update(getNamespace("updateByPrimaryKey"), record);
 	}
 

@@ -27,6 +27,7 @@ import org.springframework.web.filter.CharacterEncodingFilter;
 import javax.sql.DataSource;
 import java.beans.PropertyVetoException;
 import java.io.IOException;
+import java.util.LinkedHashMap;
 
 @SpringBootApplication
 @EnableAspectJAutoProxy
@@ -50,10 +51,10 @@ public class Application extends SpringBootServletInitializer {
 	public DataSource dataSource() {
 
 		ComboPooledDataSource ds = new ComboPooledDataSource();
-		ds.setJdbcUrl("jdbc:mysql://localhost:3306/elecon?useUnicode=true&amp;charaterEncoding=utf-8&" +
+		ds.setJdbcUrl("jdbc:mysql://localhost:3306/didi?useUnicode=true&amp;charaterEncoding=utf-8&" +
 				"zeroDateTimeBehavior=convertToNull");
 		ds.setUser("root");
-		ds.setPassword("root");//elecon
+		ds.setPassword("root");//
 		try {
 			ds.setDriverClass("com.mysql.jdbc.Driver");
 		} catch (PropertyVetoException e) {
@@ -82,7 +83,7 @@ public class Application extends SpringBootServletInitializer {
 		SqlSessionFactoryBean sFactoryBean = new SqlSessionFactoryBean();
 		sFactoryBean.setDataSource(dataSource());
 
-		String packageSearchPath = "classpath*:com/gdut/dongjun/domain/dao/**/*.xml";
+		String packageSearchPath = "classpath*:com/didiElectrician/dao/*.xml";
 		Resource[] resources = null;
 		try {
 			resources = new PathMatchingResourcePatternResolver()
@@ -92,7 +93,7 @@ public class Application extends SpringBootServletInitializer {
 			e.printStackTrace();
 		}
 		sFactoryBean.setMapperLocations(resources);
-		sFactoryBean.setTypeAliasesPackage("com.gdut.dongjun.domain.po");
+		sFactoryBean.setTypeAliasesPackage("com.didiElectrician.domain.po");
 
 		return sFactoryBean;
 	}
@@ -209,12 +210,19 @@ public class Application extends SpringBootServletInitializer {
 
 		ShiroFilterFactoryBean factoryBean = new ShiroFilterFactoryBean();
 		factoryBean.setSecurityManager(defaultWebSecurityManager());
-		factoryBean
-				.setFilterChainDefinitions("/dongjun/* = authc");
-//
-		factoryBean.setLoginUrl("/dongjun/login");
-//		factoryBean.setSuccessUrl("index");
-//		factoryBean.setUnauthorizedUrl("unauthorized");
+		factoryBean.setLoginUrl("/user/login");
+		factoryBean.setSuccessUrl("/index");
+
+		LinkedHashMap<String, String> filterChainDefinitionMap=new LinkedHashMap<>();
+		filterChainDefinitionMap.put("/user/login", "anon");//表示可以匿名访问
+		filterChainDefinitionMap.put("/user/signup","anon");
+
+		filterChainDefinitionMap.put("/*", "authc");//表示需要认证才可以访问
+		filterChainDefinitionMap.put("/**", "authc");//表示需要认证才可以访问
+		//未授权界面;
+		factoryBean.setUnauthorizedUrl("/403");
+		factoryBean.setFilterChainDefinitionMap(filterChainDefinitionMap);
+
 		return factoryBean;
 	}
 
@@ -254,13 +262,16 @@ public class Application extends SpringBootServletInitializer {
 		realm.setDataSource(dataSource());
 		realm.setCredentialsMatcher(matcher);
 		realm.setAuthenticationCacheName("shiro.authorizationCache");
-		realm.setAuthenticationQuery("select password from user where name = ?");
+		realm.setAuthenticationQuery("select user.password from (select password,mobile from client union select password,mobile from electrician) user where user.mobile = ?");
 		realm.setSaltStyle(SaltStyle.NO_SALT);
-		realm.setUserRolesQuery("select r.role from role r, user_role ur,user u where u.name = ? and ur.role_id = r.id and ur.user_id = u.id");
-		realm.setPermissionsQuery("select p.permission from role r,role_permission rp, permission p where r.role = ? and rp.role_id = r.id and rp.permission_id = p.id");
+		realm.setUserRolesQuery("select r.role_text from role r, user_role ur  where ur.user_id= ? and ur.role_id = r.role_id");
+		realm.setPermissionsQuery("select p.permission from role r, role_permission rp, permission p where r.role_text = ? and rp.role_id = r.role_id and rp.permission_id = p.permission_id");
 		realm.setPermissionsLookupEnabled(true);
+
 		return realm;
 	}
+
+
 
 	public static void main(String[] args) throws Exception {
 

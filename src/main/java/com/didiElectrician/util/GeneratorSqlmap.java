@@ -1,23 +1,23 @@
-package com.didiElectrician.util;
-
-import org.mybatis.generator.api.MyBatisGenerator;
-import org.mybatis.generator.config.Configuration;
-import org.mybatis.generator.config.xml.ConfigurationParser;
-import org.mybatis.generator.internal.DefaultShellCallback;
-
-import java.io.File;
-import java.util.ArrayList;
-import java.util.List;
-
-/**
- * @author zjd
- * @email 452880294@qq.com
- * @date 2015年11月28日
- * @description xml和po生成类，将注释消除后，引入包，用maven，使用mybatis-generator:generate即可产生xml和po
- * @package com.gdut.dongjun.util
- */
-public class GeneratorSqlmap {
-
+//package com.didiElectrician.util;
+//
+//import org.mybatis.generator.api.MyBatisGenerator;
+//import org.mybatis.generator.config.Configuration;
+//import org.mybatis.generator.config.xml.ConfigurationParser;
+//import org.mybatis.generator.internal.DefaultShellCallback;
+//
+//import java.io.File;
+//import java.util.ArrayList;
+//import java.util.List;
+//
+///**
+// * @author zjd
+// * @email 452880294@qq.com
+// * @date 2015年11月28日
+// * @description xml和po生成类，将注释消除后，引入包，用maven，使用mybatis-generator:generate即可产生xml和po
+// * @package com.gdut.dongjun.util
+// */
+//public class GeneratorSqlmap {
+//
 //    public void generator() throws Exception{
 //
 //
@@ -44,5 +44,5 @@ public class GeneratorSqlmap {
 //        }
 //
 //    }
-    
-}
+//
+//}

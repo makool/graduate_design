@@ -7,6 +7,7 @@ import com.didiElectrician.util.ValidationUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.HashMap;
@@ -23,7 +24,7 @@ public class ModuleController {
     @Autowired
     private ModuleService moduleService;
 
-    @RequestMapping("/getModuleByMobile")
+    @RequestMapping(value = "/getModuleByMobile", method = RequestMethod.POST)
     @ResponseBody
     public String getModuleByMobile(String mobile) {
         Map<String, Object> map = new HashMap<>();
@@ -35,4 +36,17 @@ public class ModuleController {
         List<Module> list = moduleService.getModuleByMobile(mobile);
         return JsonUtil.toArray(list).toString();
     }
+
+
+    @RequestMapping(value = "/updateModule", method = RequestMethod.POST)
+    @ResponseBody
+    public String updateModule(Module module) {
+        Map<String, Object> map = new HashMap<>();
+        map.put("success", false);
+        logger.info("======" + "开始更新菜单" + "======");
+        map.put("success", moduleService.updateByPrimaryKeySelective(module));
+        logger.info("======" + "结束更新菜单" + "======");
+        return JsonUtil.toObject(map).toString();
+    }
+
 }

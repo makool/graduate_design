@@ -10,6 +10,7 @@ import com.aliyuncs.http.MethodType;
 import com.aliyuncs.profile.DefaultProfile;
 import com.aliyuncs.profile.IClientProfile;
 
+import java.util.Random;
 import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -38,4 +39,16 @@ public class ValidationUtil {
     public static boolean validatePassword(String password) {
         return true;
     }
+
+    public static String getVerificationCode(){
+        Random random = new Random();
+        int number = random.nextInt(1000000);
+        String verificationCode = String.valueOf(number);
+        int length = verificationCode.length();
+        for(int i = length; i < 6; i++) {
+            verificationCode = "0" + verificationCode;
+        }
+        return verificationCode;
+    }
+
 }

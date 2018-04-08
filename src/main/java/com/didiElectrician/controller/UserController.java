@@ -11,6 +11,7 @@ import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttributes;
 
@@ -32,7 +33,7 @@ public class UserController {
 
     private static final Logger logger = Logger.getLogger(UserController.class.toString());
 
-    @RequestMapping(value = "/login")
+    @RequestMapping(value = "/login", method = RequestMethod.POST)
     @ResponseBody
     public String login(String mobile, String password,String userType, HttpSession session) {
         Map<String,Object> map = new HashMap<>();
@@ -80,6 +81,7 @@ public class UserController {
         if(subject.isAuthenticated()) {
             subject.logout();
 //            session.removeAttribute("user");
+            logger.info("成功退出");
             map.put("success",true);
         }
         return JsonUtil.toObject(map).toString();

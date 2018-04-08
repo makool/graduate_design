@@ -23,9 +23,9 @@ public abstract class BaseServiceImpl<T> implements BaseService<T>{
     }
 
     @Override
-    public boolean updateByPrimaryKey(T t) {
+    public boolean updateByPrimaryKeySelective(T t) {
         try{
-            singlePrimaryKeyBaseMapper.updateByPrimaryKey(t);
+            singlePrimaryKeyBaseMapper.updateByPrimaryKeySelective(t);
         }catch (Exception e){
             return false;
         }

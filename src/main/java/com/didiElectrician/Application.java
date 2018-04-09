@@ -14,22 +14,22 @@ import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.aop.framework.autoproxy.DefaultAdvisorAutoProxyCreator;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
 import org.springframework.boot.builder.SpringApplicationBuilder;
-import org.springframework.boot.context.embedded.FilterRegistrationBean;
-import org.springframework.boot.context.web.SpringBootServletInitializer;
+import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.DependsOn;
 import org.springframework.context.annotation.EnableAspectJAutoProxy;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
-import org.springframework.web.filter.CharacterEncodingFilter;
+
 
 import javax.sql.DataSource;
 import java.beans.PropertyVetoException;
 import java.io.IOException;
 import java.util.LinkedHashMap;
 
-@SpringBootApplication
+@SpringBootApplication(exclude = {DataSourceAutoConfiguration.class})
 @EnableAspectJAutoProxy
 public class Application extends SpringBootServletInitializer {
 
@@ -121,39 +121,6 @@ public class Application extends SpringBootServletInitializer {
 
 	/**
 	 * 
-	 * @Title: characterEncodingFilter
-	 * @Description: TODO
-	 * @param @return
-	 * @return CharacterEncodingFilter
-	 * @throws
-	 */
-	@Bean
-	public CharacterEncodingFilter characterEncodingFilter() {
-
-		CharacterEncodingFilter filter = new CharacterEncodingFilter();
-		filter.setEncoding("UTF-8");
-		return filter;
-	}
-
-	/**
-	 * 
-	 * @Title: registerCharacterEncodingFilter
-	 * @Description: TODO
-	 * @param @return
-	 * @return FilterRegistrationBean
-	 * @throws
-	 */
-	@Bean
-	public FilterRegistrationBean registerCharacterEncodingFilter() {
-
-		FilterRegistrationBean chafil = new FilterRegistrationBean();
-		chafil.setFilter(characterEncodingFilter());
-		chafil.addUrlPatterns("/*");
-		return chafil;
-	}
-
-	/**
-	 * 
 	 * @Title: defaultAdvisorAutoProxyCreator
 	 * @Description: TODO
 	 * @param @return
@@ -210,17 +177,18 @@ public class Application extends SpringBootServletInitializer {
 
 		ShiroFilterFactoryBean factoryBean = new ShiroFilterFactoryBean();
 		factoryBean.setSecurityManager(defaultWebSecurityManager());
-		factoryBean.setLoginUrl("/user/login");
+		factoryBean.setLoginUrl("/index.jsp");
 		factoryBean.setSuccessUrl("/index");
 
 		LinkedHashMap<String, String> filterChainDefinitionMap=new LinkedHashMap<>();
 		filterChainDefinitionMap.put("/user/login", "anon");//表示可以匿名访问
-		filterChainDefinitionMap.put("/user/signup","anon");
+		filterChainDefinitionMap.put("/user/register","anon");
 
 		filterChainDefinitionMap.put("/*", "authc");//表示需要认证才可以访问
 		filterChainDefinitionMap.put("/**", "authc");//表示需要认证才可以访问
 		//未授权界面;
 		factoryBean.setUnauthorizedUrl("/403");
+
 		factoryBean.setFilterChainDefinitionMap(filterChainDefinitionMap);
 
 		return factoryBean;

@@ -2,21 +2,25 @@ package com.didiElectrician.controller;
 
 import com.didiElectrician.domain.Client;
 import com.didiElectrician.domain.Electrician;
+import com.didiElectrician.domain.vo.FileUploadVo;
 import com.didiElectrician.service.ClientService;
 import com.didiElectrician.service.ElectricianService;
+import com.didiElectrician.util.FileUploadUtil;
 import com.didiElectrician.util.JsonUtil;
+import com.didiElectrician.util.ValidationUtil;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.SessionAttributes;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
 
@@ -65,8 +69,7 @@ public class UserController {
     private void subjectLogin(String mobile, String password, Map<String, Object> map) {
         Subject subject = SecurityUtils.getSubject();
         UsernamePasswordToken token = new UsernamePasswordToken(mobile, password);
-
-            subject.login(token);
+        subject.login(token);
 
         logger.info("==========" + mobile + "=========="  + "登录成功");
         map.put("success",true);
@@ -74,7 +77,7 @@ public class UserController {
 
     @RequestMapping(value = "/logout")
     @ResponseBody
-    public String logout(HttpSession session){
+    public String logout(){
         Map<String,Object> map = new HashMap<>();
         map.put("success",false);
         Subject subject = SecurityUtils.getSubject();
@@ -84,6 +87,38 @@ public class UserController {
             logger.info("成功退出");
             map.put("success",true);
         }
+        return JsonUtil.toObject(map).toString();
+    }
+
+    /**
+     * TODO
+     * @param client
+     * @param httpServletRequest
+     * @param files
+     * @return
+     */
+    @RequestMapping(value = "/register", method = RequestMethod.POST, produces="text/plain;charset=UTF-8")
+    @ResponseBody
+    public String register(Client client, HttpServletRequest httpServletRequest, @RequestParam("files") MultipartFile[] files) {
+        Map<String,Object> map = new HashMap<>();
+        map.put("success",false);
+        List<String> list  = ValidationUtil.validateClient(client);
+        if(list.size() != 0) {
+            return JsonUtil.toObject(map).toString();
+        }
+
+        List<FileUploadVo> fvl = FileUploadUtil.uploadFile(files,client.getMobile()+ "/real_name_authentication", httpServletRequest, true);
+        client.setLegalPersonIdentityCardBack(fvl.get(0).getRealPath());
+        client.setLegalPersonIdentityCardFront(fvl.get(1).getRealPath());
+        client.setLegalPersonIdentityCardSecret(fvl.get(2).getRealPath());
+        client.setLegalPersonIdentityCardId(fvl.get(3).getRealPath());
+
+        if(clientService.insert(client)) {
+            logger.info("=======" + client.getMobile()  +  "注册成功" + "=======");
+        }else {
+            logger.info("======" + "注册失败" + "=======");
+        }
+
         return JsonUtil.toObject(map).toString();
     }
 }

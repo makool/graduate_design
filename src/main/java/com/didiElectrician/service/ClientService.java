@@ -5,4 +5,5 @@ import com.didiElectrician.service.base.BaseService;
 
 public interface ClientService extends BaseService<Client>{
     boolean login(Client client);
+    boolean validateClient(Client client);
 }

@@ -9,7 +9,10 @@ import com.aliyuncs.exceptions.ClientException;
 import com.aliyuncs.http.MethodType;
 import com.aliyuncs.profile.DefaultProfile;
 import com.aliyuncs.profile.IClientProfile;
+import com.didiElectrician.domain.Client;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 import java.util.logging.Logger;
 import java.util.regex.Matcher;
@@ -36,10 +39,6 @@ public class ValidationUtil {
         return false;
     }
 
-    public static boolean validatePassword(String password) {
-        return true;
-    }
-
     public static String getVerificationCode(){
         Random random = new Random();
         int number = random.nextInt(1000000);
@@ -51,4 +50,29 @@ public class ValidationUtil {
         return verificationCode;
     }
 
+    public static List<String> validateClient(Client client) {
+        List<String> list = new ArrayList<>();
+        String regex = "^(?![0-9]+$)(?![a-zA-Z]+$)[0-9A-Za-z]{8,16}$";
+        //检查密码
+        if(!client.getPassword().matches(regex)) {
+            list.add("密码格式错误");
+        }
+
+        //检查用户名
+        if (client.getUsername() == null || "".equals(client.getUsername())) {
+            list.add("用户名为空");
+        }
+
+        //检查密保和密保答案
+        if (client.getSecurityQuestion() == null || client.getSecutityAnswer() != null) {
+            list.add("密保和密保答案不能为空");
+        }
+
+        //检查地址
+        if (client.getAddressId() == null || "".equals(client.getAddressId())) {
+            list.add("地址不能为空");
+        }
+
+        return list;
+    }
 }
